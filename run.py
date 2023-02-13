@@ -1,5 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from datetime import datetime
+
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -13,8 +15,36 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('lees_cake_shop')
 
 sales = SHEET.worksheet('favorites')
+sales_worksheet = SHEET.worksheet("sales")
+wastage_worksheet = SHEET.worksheet("wastage")
+stock_worksheet = SHEET.worksheet("stock")
+favorites_worksheet = SHEET.worksheet("favorites")
+rate_worksheet = SHEET.worksheet("rate")
 
-data = sales.get_all_values()
+
+def update_sales_worksheet(new_data):
+    """
+    Add values given by the user to sales worksheet.
+    """
+    print("Updating sales worksheet...")
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    sales_worksheet.append_row([today_date] + new_data)
+    print("Sales worksheet updated successfully.")
+
+
+def update_wastage_worksheet(sales_data):
+    """
+    Calculate the total waste by subtracting the sales number from the stock.
+    """
+    stocks = stock_worksheet.get_all_values()[1]
+    wastage = []
+    for i in range(len(stocks)):
+        wastage.append(int(stocks[i]) - int(sales_data[i]))
+    
+    print("Updating Wastage worksheet...")
+    today_date = datetime.today().strftime('%Y-%m-%d')
+    wastage_worksheet.append_row([today_date] + wastage)
+    print("Wastage worksheet updated successfully.")
 
 
 def add_sales_data():
@@ -32,6 +62,8 @@ def add_sales_data():
             if len(values) == 10:
                 print("Data is valid!")
                 print(values)
+                update_sales_worksheet(values)
+                update_wastage_worksheet(values)
                 break
             else:
                 print(f"10 numbers needed to complete this operation. You provided {len(values)}. Please try again. \n")
@@ -40,4 +72,15 @@ def add_sales_data():
             print("Not a number. Please enter a valid number.")
 
 
-add_sales_data()
+
+def main():
+    print("Hello, welcome to lee's cakes data management program.")
+    choice = input("To add new sales to your worksheet enter 'sales'. To exit program enter 'exit'.\n")
+    if choice == "sales":
+        add_sales_data()
+    elif choice == "exit":
+        print("Exiting program...")
+        exit()
+
+
+main()
