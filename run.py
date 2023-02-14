@@ -47,6 +47,20 @@ def update_wastage_worksheet(sales_data):
     print("Wastage worksheet updated successfully.")
 
 
+def update_rate_worksheet():
+    """
+    Uses the sp and cp values to calculate net revenue and profit based on sales numbers.
+    """
+    sp_data = rate_worksheet.col_values(2)
+    cp_data = rate_worksheet.col_values(3)
+    # no_of_cakes_sold = sales_data[] how to add from each flavour and update with the day?
+    # no_of_cakes_wasted = wastage[] from row to column?
+    profit_data = []
+    net_revenue = []
+    profit = []
+    print(cp_data)
+
+
 def add_sales_data():
     """
     Checks the values given by the user and adds to the spreadsheet 'sales'
@@ -82,5 +96,5 @@ def main():
         print("Exiting program...")
         exit()
 
-
-main()
+update_rate_worksheet()
+# main()
