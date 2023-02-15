@@ -47,18 +47,38 @@ def update_wastage_worksheet(sales_data):
     print("Wastage worksheet updated successfully.")
 
 
-def update_rate_worksheet():
+def calculate_rate_worksheet():
     """
     Uses the sp and cp values to calculate net revenue and profit based on sales numbers.
     """
-    sp_data = rate_worksheet.col_values(2)
-    cp_data = rate_worksheet.col_values(3)
-    # no_of_cakes_sold = sales_data[] how to add from each flavour and update with the day?
-    # no_of_cakes_wasted = wastage[] from row to column?
-    profit_data = []
+    no_of_cakes_sold = []
+    no_of_cakes_wasted = []
+    sp_values = rate_worksheet.col_values(2)
+    cp_values = rate_worksheet.col_values(3)
+    sp_data = []
+    cp_data = []
     net_revenue = []
+    profit_perc_data = []
     profit = []
-    print(cp_data)
+    
+    for i in range(1, len(sp_values)):
+        sp_data = sp_values[1:]
+
+    for i in range(1, len(cp_values)):
+        cp_data = cp_values[1:]
+
+    for i in range(len(sp_data)):
+        profit_perc_values = []
+        profit_perc_values.append(100 * (int(sp_data[i]) - int(cp_data[i])) / int(cp_data[i]))
+        for i in range(len(profit_perc_values)):
+            profit_perc_data.append(int(profit_perc_values[i]))
+
+    print("Updating profit percentage...")
+
+    for index, data in enumerate(profit_perc_data):
+        rate_worksheet.update_cell(index+2, 4, data)
+
+    print("Profit percentage updated successfully.")
 
 
 def add_sales_data():
@@ -78,6 +98,7 @@ def add_sales_data():
                 print(values)
                 update_sales_worksheet(values)
                 update_wastage_worksheet(values)
+                update_rate_worksheet(values)
                 break
             else:
                 print(f"10 numbers needed to complete this operation. You provided {len(values)}. Please try again. \n")
@@ -96,5 +117,5 @@ def main():
         print("Exiting program...")
         exit()
 
-update_rate_worksheet()
+calculate_rate_worksheet()
 # main()
