@@ -21,6 +21,11 @@ stock_worksheet = SHEET.worksheet("stock")
 favorites_worksheet = SHEET.worksheet("favorites")
 rate_worksheet = SHEET.worksheet("rate")
 
+sp_data = []
+cp_data = []
+no_of_cakes_sold = []
+no_of_cakes_wasted = []
+
 
 def update_sales_worksheet(new_data):
     """
@@ -47,25 +52,42 @@ def update_wastage_worksheet(sales_data):
     print("Wastage worksheet updated successfully.")
 
 
-def calculate_rate_worksheet():
+def update_rate_worksheet(data):
+
+    print("Transfering new profit percentage to worksheet...")
+
+    for index, data in enumerate(profit_perc_data):
+        rate_worksheet.update_cell(index+2, 4, data)
+
+    print("Rate worksheet updated successfully.")
+
+
+def calculate_net_revenue():
     """
-    Uses the sp and cp values to calculate net revenue and profit based on sales numbers.
+    Calculates the net revenue by subctracting the sp by the cp and multiplying it by the no of cakes sold.
     """
-    no_of_cakes_sold = []
-    no_of_cakes_wasted = []
+
+
+
+def calculate_profit_perc(arg1, arg2):
+    """
+    Gets the sp and cp value and calculates the total profit percentage for each product.
+    """
     sp_values = rate_worksheet.col_values(2)
     cp_values = rate_worksheet.col_values(3)
-    sp_data = []
-    cp_data = []
-    net_revenue = []
+    
+    global profit_perc_data
     profit_perc_data = []
-    profit = []
     
     for i in range(1, len(sp_values)):
+        global sp_data
         sp_data = sp_values[1:]
 
     for i in range(1, len(cp_values)):
+        global cp_data
         cp_data = cp_values[1:]
+
+    print("Calculating profit percentage...")
 
     for i in range(len(sp_data)):
         profit_perc_values = []
@@ -73,12 +95,9 @@ def calculate_rate_worksheet():
         for i in range(len(profit_perc_values)):
             profit_perc_data.append(int(profit_perc_values[i]))
 
-    print("Updating profit percentage...")
+    print(f"Your total profit percentage is {profit_perc_data}")
 
-    for index, data in enumerate(profit_perc_data):
-        rate_worksheet.update_cell(index+2, 4, data)
-
-    print("Profit percentage updated successfully.")
+    return profit_perc_data
 
 
 def add_sales_data():
@@ -98,7 +117,6 @@ def add_sales_data():
                 print(values)
                 update_sales_worksheet(values)
                 update_wastage_worksheet(values)
-                update_rate_worksheet(values)
                 break
             else:
                 print(f"10 numbers needed to complete this operation. You provided {len(values)}. Please try again. \n")
@@ -106,6 +124,7 @@ def add_sales_data():
         except:
             print("Not a number. Please enter a valid number.")
 
+        return values
 
 
 def main():
@@ -113,9 +132,11 @@ def main():
     choice = input("To add new sales to your worksheet enter 'sales'. To exit program enter 'exit'.\n")
     if choice == "sales":
         add_sales_data()
+        calculate_profit_perc()
     elif choice == "exit":
         print("Exiting program...")
         exit()
 
-calculate_rate_worksheet()
 # main()
+calculate_profit_perc(sp_data, cp_data)
+update_rate_worksheet(profit_perc_data)
