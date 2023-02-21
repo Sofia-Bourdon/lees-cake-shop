@@ -54,19 +54,50 @@ def update_wastage_worksheet(sales_data):
 
 def update_rate_worksheet(data):
 
-    print("Transfering new profit percentage to worksheet...")
+    print(f"Transfering new {data} to worksheet...")
 
     for index, data in enumerate(profit_perc_data):
         rate_worksheet.update_cell(index+2, 4, data)
 
+    for index, data in enumerate(net_revenue):
+        rate_worksheet.update_cell(index+2, 5, data)
+
     print("Rate worksheet updated successfully.")
 
 
-def calculate_net_revenue():
+def calculate_net_revenue(worksheet):
     """
     Calculates the net revenue by subctracting the sp by the cp and multiplying it by the no of cakes sold.
     """
+    global net_revenue
+    net_revenue = []
+    global no_of_cakes_sold
+    no_of_cakes_sold = []
+    sales = sales_worksheet.get_all_values()
 
+    choco_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(2)[1:]])
+    vanilla_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(3)[1:]])
+    redvlvt_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(4)[1:]])
+    lemon_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(5)[1:]])
+    sponge_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(6)[1:]])
+    blackfor_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(7)[1:]])
+    icecream_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(8)[1:]])
+    funfetti_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(9)[1:]])
+    cookie_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(10)[1:]])
+    chiffon_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(3)[1:]])
+
+    no_of_cakes_sold.extend(value for name, value in locals().items() if name.endswith('cakes_sold'))
+
+    print("Calculating net revenue...")
+    
+    for i in range(len(no_of_cakes_sold)):
+        net_revenue_values = []
+        net_revenue_values.append(no_of_cakes_sold[i] * (int(sp_data[i]) - int(cp_data[i])))
+        for i in range(len(net_revenue_values)):
+            net_revenue.append(int(net_revenue_values[i]))
+
+    print(f"your total net revenue is: {net_revenue}")
+    return net_revenue
 
 
 def calculate_profit_perc(arg1, arg2):
@@ -139,4 +170,6 @@ def main():
 
 # main()
 calculate_profit_perc(sp_data, cp_data)
+calculate_net_revenue(rate_worksheet)
 update_rate_worksheet(profit_perc_data)
+update_rate_worksheet(net_revenue)
