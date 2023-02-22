@@ -52,9 +52,9 @@ def update_wastage_worksheet(sales_data):
     print("Wastage worksheet updated successfully.")
 
 
-def update_rate_worksheet(data):
+def update_rate_worksheet():
 
-    print(f"Transfering {data} to worksheet...")
+    # print(f"Transfering {data} to worksheet...")
 
     for index, data in enumerate(profit_perc_data):
         rate_worksheet.update_cell(index+2, 4, data)
@@ -62,17 +62,22 @@ def update_rate_worksheet(data):
     for index, data in enumerate(net_revenue):
         rate_worksheet.update_cell(index+2, 5, data)
 
-    for index, data in enumerate(total_profit):
+    for index, data in enumerate(individual_profit):
         rate_worksheet.update_cell(index+2, 6, data)
 
     print("Rate worksheet updated successfully.")
 
 
-def update_total_profit(data):
+def update_total_profit():
+    """
+    Calculates the total profit based on the individual profit values and updates into the spreadsheet
+    """
+    total_profit = sum(int(i) for i in individual_profit)
+    print(f"Your total profit is: {total_profit}")
+    rate_worksheet.update_cell(11, 8, total_profit)
 
 
-
-def calculate_individual_profit(worksheet):
+def calculate_individual_profit():
     """
     Calculates the total profit based on the equation:
     Profit = (sp_data-cp_data)* no_of_cakes_sold - no_of_cakes_wasted * cp_data
@@ -82,22 +87,13 @@ def calculate_individual_profit(worksheet):
     global no_of_cakes_wasted
     no_of_cakes_wasted = []
 
-    choco_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(2)[1:]])
-    vanilla_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(3)[1:]])
-    redvlvt_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(4)[1:]])
-    lemon_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(5)[1:]])
-    sponge_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(6)[1:]])
-    blackfor_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(7)[1:]])
-    icecream_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(8)[1:]])
-    funfetti_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(9)[1:]])
-    cookie_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(10)[1:]])
-    chiffon_cakes_wasted = sum([int(i) for i in wastage_worksheet.col_values(3)[1:]])
 
-    no_of_cakes_wasted.extend(value for name, value in locals().items() if name.endswith('cakes_wasted'))
+    for i in range(2,12):
+        no_of_cakes_wasted.append(sum([int(j) for j in wastage_worksheet.col_values(i)[1:]]))
 
     print("Calculating Profit...")
 
-    for i in range(len(no_of_cakes_sold)):
+    for i in range(10):
         ind_profit_values = []
         ind_profit_values.append(int(net_revenue[i]) - (int(no_of_cakes_wasted[i]) * int(cp_data[i])))
         for i in range(len(ind_profit_values)):
@@ -109,7 +105,7 @@ def calculate_individual_profit(worksheet):
 
 
 
-def calculate_net_revenue(worksheet):
+def calculate_net_revenue():
     """
     Calculates the net revenue by subctracting the sp by the cp and multiplying it by the no of cakes sold.
     """
@@ -118,32 +114,20 @@ def calculate_net_revenue(worksheet):
     global no_of_cakes_sold
     no_of_cakes_sold = []
 
-    choco_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(2)[1:]])
-    vanilla_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(3)[1:]])
-    redvlvt_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(4)[1:]])
-    lemon_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(5)[1:]])
-    sponge_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(6)[1:]])
-    blackfor_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(7)[1:]])
-    icecream_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(8)[1:]])
-    funfetti_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(9)[1:]])
-    cookie_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(10)[1:]])
-    chiffon_cakes_sold = sum([int(i) for i in sales_worksheet.col_values(3)[1:]])
-
-    no_of_cakes_sold.extend(value for name, value in locals().items() if name.endswith('cakes_sold'))
-
+    for i in range(2,12):
+        no_of_cakes_sold.append(sum([int(j) for j in sales_worksheet.col_values(i)[1:]]))
+    
     print("Calculating net revenue...")
     
     for i in range(len(no_of_cakes_sold)):
-        net_revenue_values = []
-        net_revenue_values.append(no_of_cakes_sold[i] * (int(sp_data[i]) - int(cp_data[i])))
-        for i in range(len(net_revenue_values)):
-            net_revenue.append(int(net_revenue_values[i]))
+        net_revenue.append(int(no_of_cakes_sold[i] * (int(sp_data[i]) - int(cp_data[i]))))
+        
 
     print(f"your total net revenue is: {net_revenue}")
-    return net_revenue
+    # return net_revenue
 
 
-def calculate_profit_perc(arg1, arg2):
+def calculate_profit_perc():
     """
     Gets the sp and cp value and calculates the total profit percentage for each product.
     """
@@ -212,10 +196,8 @@ def main():
         exit()
 
 # main()
-calculate_profit_perc(sp_data, cp_data)
-calculate_net_revenue(rate_worksheet)
-calculate_individual_profit(rate_worksheet)
-update_total_profit(individual_profit)
-# update_rate_worksheet(profit_perc_data)
-# update_rate_worksheet(net_revenue)
-# update_rate_worksheet(individual_profit)
+calculate_profit_perc()
+calculate_net_revenue()
+calculate_individual_profit()
+update_total_profit()
+update_rate_worksheet()
