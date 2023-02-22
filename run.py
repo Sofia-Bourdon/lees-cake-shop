@@ -37,6 +37,28 @@ def update_sales_worksheet(new_data):
     print("Sales worksheet updated successfully.")
 
 
+def update_stock_worksheet():
+    """
+    Calculates the new stock numbers based on the last couple of sales from each product
+    """
+    global new_stock
+    new_stock = []
+
+    print("Calculating new stock...")
+
+    for i in range(2,12):
+        last_two_sales = []
+        last_two_sales.append(sum([int(i) for i in sales_worksheet.col_values(i)[-2:]]))
+        for i in range(len(last_two_sales)):
+            new_stock.append(round(int(last_two_sales[i]) / 2))
+    print("Updating new values into the stock worksheet...")
+    
+    stock_worksheet.append_row(new_stock)
+
+    print("Stock worksheet updated successfully")
+    print(new_stock)
+
+
 def update_wastage_worksheet(sales_data):
     """
     Calculate the total waste by subtracting the sales number from the stock.
@@ -196,8 +218,9 @@ def main():
         exit()
 
 # main()
-calculate_profit_perc()
-calculate_net_revenue()
-calculate_individual_profit()
-update_total_profit()
-update_rate_worksheet()
+# calculate_profit_perc()
+# calculate_net_revenue()
+# calculate_individual_profit()
+# update_total_profit()
+# update_rate_worksheet()
+update_stock_worksheet()
