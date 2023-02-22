@@ -14,11 +14,9 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('lees_cake_shop')
 
-sales = SHEET.worksheet('favorites')
 sales_worksheet = SHEET.worksheet("sales")
 wastage_worksheet = SHEET.worksheet("wastage")
 stock_worksheet = SHEET.worksheet("stock")
-favorites_worksheet = SHEET.worksheet("favorites")
 rate_worksheet = SHEET.worksheet("rate")
 
 sp_data = []
@@ -197,10 +195,10 @@ def add_sales_data():
                 print("10 numbers needed to complete this operation.")
                 print(f"You provided {len(values)}. Please try again. \n")
                 print(data_input)
-        except raise ValueError:
+        except:
             print("Not a number. Please enter a valid number.")
 
-        return values
+    return values
 
 
 def main():
