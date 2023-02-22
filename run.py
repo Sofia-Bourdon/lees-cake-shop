@@ -39,20 +39,19 @@ def update_sales_worksheet(new_data):
 
 def update_stock_worksheet():
     """
-    Calculates the new stock numbers based on the last couple of sales from each product
+    Calculates the new stock numbers and updates into stock sheet
     """
     global new_stock
     new_stock = []
 
     print("Calculating new stock...")
 
-    for i in range(2,12):
+    for i in range(2, 12):
         last_two_sales = []
         last_two_sales.append(sum([int(i) for i in sales_worksheet.col_values(i)[-2:]]))
         for i in range(len(last_two_sales)):
             new_stock.append(round(int(last_two_sales[i]) / 2))
     print("Updating new values into the stock worksheet...")
-    
     stock_worksheet.append_row(new_stock)
 
     print("Stock worksheet updated successfully")
@@ -67,7 +66,6 @@ def update_wastage_worksheet(sales_data):
     wastage = []
     for i in range(len(stocks)):
         wastage.append(int(stocks[i]) - int(sales_data[i]))
-    
     print("Updating Wastage worksheet...")
     today_date = datetime.today().strftime('%Y-%m-%d')
     wastage_worksheet.append_row([today_date] + wastage)
@@ -92,7 +90,7 @@ def update_rate_worksheet():
 
 def update_total_profit():
     """
-    Calculates the total profit based on the individual profit values and updates into the spreadsheet
+    Calculates the total profit and updates into the spreadsheet
     """
     total_profit = sum(int(i) for i in individual_profit)
     print(f"Your total profit is: {total_profit}")
@@ -101,16 +99,14 @@ def update_total_profit():
 
 def calculate_individual_profit():
     """
-    Calculates the total profit based on the equation:
-    Profit = (sp_data-cp_data)* no_of_cakes_sold - no_of_cakes_wasted * cp_data
+    Calculates the individual profit of each product.
     """
-    global individual_profit 
+    global individual_profit
     individual_profit = []
     global no_of_cakes_wasted
     no_of_cakes_wasted = []
 
-
-    for i in range(2,12):
+    for i in range(2, 12):
         no_of_cakes_wasted.append(sum([int(j) for j in wastage_worksheet.col_values(i)[1:]]))
 
     print("Calculating Profit...")
@@ -126,24 +122,22 @@ def calculate_individual_profit():
     return individual_profit
 
 
-
 def calculate_net_revenue():
     """
-    Calculates the net revenue by subctracting the sp by the cp and multiplying it by the no of cakes sold.
+    Calculates the net revenue of each product.
     """
     global net_revenue
     net_revenue = []
     global no_of_cakes_sold
     no_of_cakes_sold = []
 
-    for i in range(2,12):
+    for i in range(2, 12):
         no_of_cakes_sold.append(sum([int(j) for j in sales_worksheet.col_values(i)[1:]]))
-    
+
     print("Calculating net revenue...")
-    
+
     for i in range(len(no_of_cakes_sold)):
         net_revenue.append(int(no_of_cakes_sold[i] * (int(sp_data[i]) - int(cp_data[i]))))
-        
 
     print(f"your total net revenue is: {net_revenue}")
     # return net_revenue
@@ -155,10 +149,10 @@ def calculate_profit_perc():
     """
     sp_values = rate_worksheet.col_values(2)
     cp_values = rate_worksheet.col_values(3)
-    
+
     global profit_perc_data
     profit_perc_data = []
-    
+
     for i in range(1, len(sp_values)):
         global sp_data
         sp_data = sp_values[1:]
@@ -185,7 +179,7 @@ def add_sales_data():
     Checks the values given by the user and adds to the spreadsheet 'sales'
     """
     print("Please enter your weekly sales data.")
-    print("Only 10 values from 1 to 20 are accepted and the data must be separated by commas.")
+    print("The data must be separated by commas.")
     print("Example: 2,4,6,8,10,12,14,16,18,20.")
 
     while True:
@@ -197,11 +191,13 @@ def add_sales_data():
                 print(values)
                 update_sales_worksheet(values)
                 update_wastage_worksheet(values)
+                update_stock_worksheet()
                 break
             else:
-                print(f"10 numbers needed to complete this operation. You provided {len(values)}. Please try again. \n")
+                print("10 numbers needed to complete this operation.")
+                print(f"You provided {len(values)}. Please try again. \n")
                 print(data_input)
-        except:
+        except raise ValueError:
             print("Not a number. Please enter a valid number.")
 
         return values
@@ -213,14 +209,13 @@ def main():
     if choice == "sales":
         add_sales_data()
         calculate_profit_perc()
+        calculate_net_revenue()
+        calculate_individual_profit()
+        update_total_profit()
+        update_rate_worksheet()
     elif choice == "exit":
         print("Exiting program...")
         exit()
 
-# main()
-# calculate_profit_perc()
-# calculate_net_revenue()
-# calculate_individual_profit()
-# update_total_profit()
-# update_rate_worksheet()
-update_stock_worksheet()
+
+main()
