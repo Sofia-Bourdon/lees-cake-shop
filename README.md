@@ -1,4 +1,4 @@
-Welcome to Lee's Cake Shop,
+# Welcome to Lee's Cake Shop,
 
 Lee's Cake Shop is a command line based program created to handle data automation which runs on a mock terminal on Heroku.
 
@@ -14,7 +14,7 @@ This program was designed to help a business minimize product wastage, keep trac
 
 # 
 
-# Future features
+### Future features
 
 * A monthly favorites feauture where the program tracks the most sold cakes of each month.
 * A reset function which allows the user to delete the existing data using the app.
