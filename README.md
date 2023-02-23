@@ -1,27 +1,24 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+Welcome to Lee's Cake Shop,
 
-Welcome Sofia-Bourdon,
+Lee's Cake Shop is a command line based program created to handle data automation which runs on a mock terminal on Heroku.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **August 17, 2021**
+This program was designed to help a business minimize product wastage, keep track of sales and profit rates as well as the total combined profit. It generates the data based on the user input and updates into a Google sheets worksheet.
 
-## Reminders
+## How to use
 
-* Your code must be placed in the `run.py` file
-* Your dependencies must be placed in the `requirements.txt` file
-* Do not edit any of the other files or your code may not deploy properly
+* The user runs the program on the app and type 'sales' to enter new sales numbers.
+* The sales numbers must be a collection of 10 numbers separated by commas. The computer will verify if it was entered correctly and request the user to enter the sales numbers again if needed.
+* The program will then generate a new wastage number based on the previous stock and each rate calculation which will be displayed on the screen. Every 2 sales registered the computer will then calculate a new stock number to minimize the wastage.
 
-## Creating the Heroku app
+## Features 
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+# 
 
-1. `heroku/python`
-2. `heroku/nodejs`
+# Future features
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+* A monthly favorites feauture where the program tracks the most sold cakes of each month.
+* A reset function which allows the user to delete the existing data using the app.
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
 
 ## Constraints
 
