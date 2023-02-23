@@ -211,6 +211,8 @@ def main():
         calculate_individual_profit()
         update_total_profit()
         update_rate_worksheet()
+        print("Thank you for using Lee's cakes data automation software.")
+        exit()
     elif choice == "exit":
         print("Exiting program...")
         exit()
