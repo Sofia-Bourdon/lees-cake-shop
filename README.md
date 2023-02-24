@@ -52,15 +52,39 @@ This program was designed to help a business minimize product wastage, keep trac
 * A new stock number based on the last couple of sales will then be calculated to prevent further wastage. The numbers will be displayed as a new row on the 'stock' sheet.
 <img width="1485" alt="Screenshot 2023-02-24 at 12 37 04" src="https://user-images.githubusercontent.com/112895499/221169952-757b32dd-0cf1-4328-961d-00e67d65bd4f.png">
 
+* A thank you message is displayed on the app screen and the program automatically exits.
+
 ### Future features
 
 * A monthly favorites feauture where the program tracks the most sold cakes of each month.
 * A reset function which allows the user to delete the existing data using the app.
 
 
-## Constraints
+## Testing 
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+The code was tested and debbugged multiple times during the construction of the project as well as passing through the PEP8 linter validator. The program was tested when deployed to the github terminal to check if the correct commands are being followed without errors.
 
------
-Happy coding!
+<img width="1486" alt="Screenshot 2023-02-24 at 13 15 13" src="https://user-images.githubusercontent.com/112895499/221176790-47db75c0-af8d-4266-8dc9-5473b9e78c4a.png">
+
+* Issues with lines being over 79 characters were found but not fixed due to the logic used to create those lines being essential for the program to run. Can be fixed in the future with a complete rewrite of those lines.
+* Kodezi was used earlier during the project construction and few indentation problems as well as missing ponctuation. 
+* Tutor support was vital for the project running. It was consulted many times when the debugging was not successful.
+
+
+## Credits
+
+* Code Institute for the deployed terminal and template. 
+* This project was inspired and used some of the logic inside the Love-Sandwiches project presented by Code Institute.
+* Mentor Akshat Garg helped structure the functions to add sales and update it to the worksheet as well as current date insertion and making the code more efficient and dynamic with for loops.
+
+* The following sites were consulted:
+
+https://stackoverflow.com/questions/3754620/what-does-while-true-mean-in-python
+https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
+https://stackoverflow.com/questions/35440326/can-you-use-break-to-validate-input-in-python
+https://codereview.stackexchange.com/questions/279307/take-in-10-numbers-validate-each-input-append-then-in-a-list-and-then-prints-t
+https://www.python-engineer.com/posts/ask-user-for-input/
+https://www.vedantu.com/formula/profit-formula
+https://www.cuemath.com/profit-formula/
+https://www.geeksforgeeks.org/python-converting-all-strings-in-list-to-integers/
+
